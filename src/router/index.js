@@ -9,11 +9,14 @@ Vue.use(VueRouter)
 const routes = [{
   path: '/',
   redirect: '/login'
-}, {
+},
+// 一级路由 主页
+{
   path: '/home',
   name: 'home',
   component: Home
 }, {
+  // 一级路由 登录页
   path: '/login',
   component: Login
 }

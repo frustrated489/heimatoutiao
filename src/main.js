@@ -7,7 +7,7 @@ import './styles/index.less'
 import axios from 'axios'
 
 axios.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
-Vue.proyotype.$http = axios
+Vue.prototype.$axios = axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
