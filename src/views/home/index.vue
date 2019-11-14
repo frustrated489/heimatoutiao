@@ -46,11 +46,11 @@
 </template>
 
 <script>
-
+import layoutHeader from '../../components/layout-header.vue'
 export default {
   name: 'home',
   components: {
-
+    'layout-header': layoutHeader
   }
 }
 </script>
