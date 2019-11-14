@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
 const routes = [{
   path: '/',
-  redirect: '/login'
+  redirect: '/home'
 },
 // 一级路由 主页
 {
@@ -18,6 +18,7 @@ const routes = [{
 }, {
   // 一级路由 登录页
   path: '/login',
+  name: 'login',
   component: Login
 }
   // {

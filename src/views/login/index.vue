@@ -32,6 +32,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -67,7 +68,7 @@ export default {
   methods: {
     login () {
       // this.$refs.formObj 获取el-form 的对象实力
-      this.$refs.formObj.validate(function (isOK) {
+      this.$refs.formObj.validate((isOK) => {
         if (isOK) {
           // 如果为true 继续下一步 调用接口 登录
           this.$axios({
@@ -75,7 +76,16 @@ export default {
             data: this.loginForm,
             method: 'post'
           }).then(result => {
+            // 存储到本地存储
             window.localStorage.setItem('user-token', result.data.data.token)
+            // 跳转到主页
+            this.$router.push('/home')
+          }).catch(() => {
+            // 提示消息
+            this.$message({
+              type: 'warning',
+              message: '您输入的手机号或验证码错误'
+            })
           })
         }
       })
