@@ -70,7 +70,13 @@ export default {
       this.$refs.formObj.validate(function (isOK) {
         if (isOK) {
           // 如果为true 继续下一步 调用接口 登录
-
+          this.$axios({
+            url: '/authorizations',
+            data: this.loginForm,
+            method: 'post'
+          }).then(result => {
+            window.localStorage.setItem('user-token', result.data.data.token)
+          })
         }
       })
     }
