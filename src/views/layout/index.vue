@@ -9,7 +9,7 @@
       <!-- 左侧菜单 -->
       <el-menu style="width:221px" background-color="#353b4e" text-color="#adafb5" active-text-color="#ffd04b" router>
         <!-- 一级菜单 -->
-        <el-menu-item>首页</el-menu-item>
+        <el-menu-item index="/">首页</el-menu-item>
         <!-- 二级菜单 -->
         <el-submenu index="1">
           <!-- 具名插槽 -->

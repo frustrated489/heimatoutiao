@@ -76,8 +76,11 @@ router.beforeEach((to, from, next) => {
   if (token) {
     next()
   } else {
-    // 没有，就跳转到登录页
-    next('/login')
+    // 2 3 没有，就跳转到登录页
+    next('/login') // 跳转到指定路由
+
+    // 如果在登录页并且是非登录状态访问非登录页面，这里手动的终止进度条，否则进度条不会停止
+    NProgress.done()
   }
 })
 
