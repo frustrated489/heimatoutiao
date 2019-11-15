@@ -1,13 +1,12 @@
 <template>
-  <div>主页</div>
+  <div class="article">
+
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
 <style>
-
 </style>

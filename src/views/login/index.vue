@@ -66,6 +66,10 @@ export default {
     }
   },
   methods: {
+    // this.$refs.formObj 获取 el-form的实例对象
+    // el-form 组件有个方法叫 validate ，用于手动触发校验
+    // 如何调用到这个组件的 validate 方法？
+    // 我们可以通过ref 来获取这个组件本身，然后就可以调用它的这个validate方法
     login () {
       // this.$refs.formObj 获取el-form 的对象实力
       this.$refs.formObj.validate((isOK) => {
@@ -79,7 +83,7 @@ export default {
             // 存储到本地存储
             window.localStorage.setItem('user-token', result.data.data.token)
             // 跳转到主页
-            this.$router.push('/home')
+            this.$router.push('/')
           }).catch(() => {
             // 提示消息
             this.$message({

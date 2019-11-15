@@ -1,5 +1,5 @@
 <template>
-  <div>主页</div>
+  <div>哈哈</div>
 </template>
 
 <script>

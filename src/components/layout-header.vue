@@ -17,7 +17,7 @@
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>账户信息</el-dropdown-item>
                 <el-dropdown-item>git地址</el-dropdown-item>
-                <el-dropdown-item>退出</el-dropdown-item>
+                <el-dropdown-item @click.native="onLogout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
       </el-col>
