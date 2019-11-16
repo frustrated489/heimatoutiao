@@ -25,7 +25,7 @@
           <el-date-picker
             v-model="rangeDate"
             type="daterange"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
           ></el-date-picker>
@@ -56,7 +56,7 @@
       scope.row 就相当于我们自己v-for的item
 
       注意：只有当你需要在自定义表格列末班中访问遍历项的时候才这么做-->
-      <el-table :data="articles" style="width: 100%">
+      <el-table v-loading="loading" :data="articles" style="width: 100%">
         <el-table-column prop="date" label="封面" width="180">
           <!-- 自定义表格列
           在 template 上声明 slot-scope="scope" ，然后就可以通过 scope.row 获取遍历项-->
@@ -104,6 +104,7 @@
       layout 用来控制布局
     -->
     <el-pagination
+      :disabled="loading"
       background
       layout="prev, pager, next"
       :total="totalCount"
@@ -169,7 +170,8 @@ export default {
           label: '已删除'
         }
       ],
-      totalCount: 0 // 总记录数
+      totalCount: 0, // 总记录数
+      loading: true
     }
   },
 
@@ -179,6 +181,8 @@ export default {
   },
   methods: {
     loadArticles (page) {
+      // 加载loading
+      this.loading = true
       // 在我们的项目中，除了 /login 接口不需要token ，其他所有的接口都需要提供token才能请求,否则后端返回 401 错误
       // 我们这里的后端要求把token 放到请求头中
       const token = window.localStorage.getItem('user-token')
@@ -207,6 +211,9 @@ export default {
         })
         .catch(err => {
           console.log(err, '获取数据失败')
+        }).finally(() => {
+          // 停止loading
+          this.loading = false
         })
     },
     onPageChange (page) {
