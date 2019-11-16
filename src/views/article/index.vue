@@ -92,9 +92,9 @@
         </el-table-column>
         <el-table-column prop="pubdate" label="发布日期"></el-table-column>
         <el-table-column prop="address" label="操作">
-          <template>
+          <template slot-scope="scope">
             <el-button type="primary" size="mini">修改</el-button>
-            <el-button type="danger" size="mini">删除</el-button>
+            <el-button type="danger" size="mini" @click="onDelete(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -120,7 +120,7 @@
 
 <script>
 export default {
-  name: 'article',
+  name: 'article-list',
   data () {
     return {
       filterForm: {
@@ -177,7 +177,8 @@ export default {
       ],
       totalCount: 0, // 总记录数
       loading: true,
-      channels: []
+      channels: [],
+      page: 1
     }
   },
 
@@ -229,6 +230,9 @@ export default {
         })
     },
     onPageChange (page) {
+      // 记录当前最新页码
+      this.page = page
+      // 请求加载指定页码的文章列表
       this.loadArticles(page)
     },
     loadChannels () {
@@ -241,6 +245,19 @@ export default {
         this.channels = res.data.data.channels
       }).catch(err => {
         console.log(err, '获取数据失败')
+      })
+    },
+    onDelete (articleID) {
+      this.$axios({
+        method: 'DELETE',
+        url: `/articles/${articleID}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('user-token')}`
+        }
+      }).then(res => {
+        this.loadArticles(this.page)
+      }).catch(err => {
+        console.log(err, '删除失败')
       })
     }
   }
