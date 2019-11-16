@@ -32,6 +32,7 @@
             range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -124,11 +125,11 @@ export default {
     return {
       filterForm: {
         status: null,
-        channel_id: null,
-        begin_pubdate: '',
-        end_pubdate: ''
+        channel_id: null
+        // begin_pubdate: '',
+        // end_pubdate: ''
       },
-      rangeDate: '',
+      rangeDate: [], // 日期范围
       // tableData: [
       //   {
       //     date: '2016-05-02',
@@ -209,9 +210,9 @@ export default {
           page, // 页码
           per_page: 10, // 每页大小 后端按照默认10条每页
           status: this.filterForm.status,
-          channel_id: this.filterForm.channel_id // 频道id 不传就是所有
-          // begin_pubdate,
-          // end_pubdate
+          channel_id: this.filterForm.channel_id, // 频道id 不传就是所有
+          begin_pubdate: this.rangeDate ? this.rangeDate[0] : null,
+          end_pubdate: this.rangeDate ? this.rangeDate[1] : null
         }
       })
         .then(res => {
