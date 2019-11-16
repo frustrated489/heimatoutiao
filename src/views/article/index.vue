@@ -7,6 +7,9 @@
       </div>
       <el-form ref="form" label-width="80px">
         <el-form-item label="文章状态">
+          <!--
+            单选框组会把选中的 radio 的 label 同步给绑定的数据
+           -->
           <el-radio-group v-model="filterForm.status">
             <el-radio :label="null">全部</el-radio>
             <el-radio label="0">草稿</el-radio>
@@ -17,9 +20,9 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道列表">
-          <el-select placeholder="请选择活动区域" v-model="filterForm.channel_id">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select placeholder="请选择频道" v-model="filterForm.channel_id">
+            <el-option label="所有频道" :value="null"></el-option>
+            <el-option :label="channel.name" :value="channel.id" v-for="channel in channels" :key="channel.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间选择">
@@ -120,8 +123,8 @@ export default {
   data () {
     return {
       filterForm: {
-        status: '',
-        channel_id: '',
+        status: null,
+        channel_id: null,
         begin_pubdate: '',
         end_pubdate: ''
       },
@@ -172,13 +175,15 @@ export default {
         }
       ],
       totalCount: 0, // 总记录数
-      loading: true
+      loading: true,
+      channels: []
     }
   },
 
   created () {
     //
     this.loadArticles(1)
+    this.loadChannels()
   },
   methods: {
     loadArticles (page) {
@@ -203,8 +208,8 @@ export default {
         params: {
           page, // 页码
           per_page: 10, // 每页大小 后端按照默认10条每页
-          status: this.filterForm.status
-          // channel_id: ,
+          status: this.filterForm.status,
+          channel_id: this.filterForm.channel_id // 频道id 不传就是所有
           // begin_pubdate,
           // end_pubdate
         }
@@ -224,6 +229,18 @@ export default {
     },
     onPageChange (page) {
       this.loadArticles(page)
+    },
+    loadChannels () {
+      // 有些接口需要 token，有些接口不需要 token
+      // 是否需要，应该由接口文档指示
+      this.$axios({
+        method: 'GET',
+        url: '/channels'
+      }).then(res => {
+        this.channels = res.data.data.channels
+      }).catch(err => {
+        console.log(err, '获取数据失败')
+      })
     }
   }
 }
