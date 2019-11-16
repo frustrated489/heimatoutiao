@@ -39,7 +39,7 @@
     <!-- 文章列表 -->
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>共找到59806条符合条件的内容</span>
+        <span>共找到{{totalCount}}条符合条件的内容</span>
       </div>
       <!-- el-table 表格组件
       data 表格的数组，要求是数组
@@ -95,6 +95,20 @@
       </el-table>
     </el-card>
     <!-- /文章列表 -->
+    <!-- 分页 -->
+    <!--
+      分页组件：
+      他默认按照10条每页划分页码
+      total 用来指定一共有多少条数据
+      background 背景色
+      layout 用来控制布局
+    -->
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="totalCount"
+      @current-change="onPageChange"
+    ></el-pagination>
   </div>
 </template>
 
@@ -110,28 +124,28 @@ export default {
         end_pubdate: ''
       },
       rangeDate: '',
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }
-      ],
+      // tableData: [
+      //   {
+      //     date: '2016-05-02',
+      //     name: '王小虎',
+      //     address: '上海市普陀区金沙江路 1518 弄'
+      //   },
+      //   {
+      //     date: '2016-05-04',
+      //     name: '王小虎',
+      //     address: '上海市普陀区金沙江路 1517 弄'
+      //   },
+      //   {
+      //     date: '2016-05-01',
+      //     name: '王小虎',
+      //     address: '上海市普陀区金沙江路 1519 弄'
+      //   },
+      //   {
+      //     date: '2016-05-03',
+      //     name: '王小虎',
+      //     address: '上海市普陀区金沙江路 1516 弄'
+      //   }
+      // ],
       articles: [], // 文章数据列表
       articleStatus: [
         {
@@ -154,15 +168,17 @@ export default {
           type: 'info',
           label: '已删除'
         }
-      ]
+      ],
+      totalCount: 0 // 总记录数
     }
   },
 
   created () {
-    this.loadArticles()
+    //
+    this.loadArticles(1)
   },
   methods: {
-    loadArticles () {
+    loadArticles (page) {
       // 在我们的项目中，除了 /login 接口不需要token ，其他所有的接口都需要提供token才能请求,否则后端返回 401 错误
       // 我们这里的后端要求把token 放到请求头中
       const token = window.localStorage.getItem('user-token')
@@ -177,14 +193,24 @@ export default {
           // 注意，token的格式要求： Bearer 用户token
           // 注意！！Bearer 后面有个空格
           Authorization: `Bearer ${token}`
+        },
+        // Query 参数使用params传递
+        params: {
+          page, // 页码
+          per_page: 10 // 每页大小 后端按照默认10条每页
         }
       })
         .then(res => {
           this.articles = res.data.data.results
+
+          this.totalCount = res.data.data.total_count
         })
         .catch(err => {
           console.log(err, '获取数据失败')
         })
+    },
+    onPageChange (page) {
+      this.loadArticles(page)
     }
   }
 }

@@ -29,6 +29,7 @@
 export default {
   methods: {
     onLogout () {
+      // this.$confirm 是element组件库提供的一个
       this.$confirm('确认退出吗？', '退出提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
