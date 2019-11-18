@@ -97,6 +97,14 @@ export default {
       })
     },
     onSubmit (draft) {
+      if (this.$route.params.articleId) {
+        this.updateArticle(draft)
+      } else {
+        this.addArticle(draft)
+      }
+    },
+
+    addArticle (draft) {
       this.$axios({
         method: 'POST',
         url: '/articles',
@@ -114,6 +122,25 @@ export default {
         .catch(err => {
           console.log(err, '保存失败')
         })
+    },
+
+    updateArticle (draft) {
+      this.$axios({
+        method: 'PUT',
+        url: `/articles/${this.$route.params.articleId}`,
+        params: {
+          draft
+        },
+        data: this.article
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('更新失败')
+      })
     }
     // loadChannels () {
     //   // 有些接口需要 token，有些接口不需要 token
