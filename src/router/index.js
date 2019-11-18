@@ -31,6 +31,9 @@ const routes = [
     }, {
       path: '/publish',
       component: Publish
+    }, {
+      path: '/publish/:articleId',
+      component: Publish
     }]
   }, {
     // 一级路由 登录页
