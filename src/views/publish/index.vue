@@ -22,14 +22,16 @@
           </el-radio-group>
         </el-form-item>-->
         <el-form-item label="频道">
-          <el-select placeholder="请选择频道" v-model="article.channel_id">
+          <!-- <el-select placeholder="请选择频道" v-model="article.channel_id">
             <el-option
               :label="channel.name"
               :value="channel.id"
               v-for="channel in channels"
               :key="channel.id"
             ></el-option>
-          </el-select>
+          </el-select> -->
+          <!-- 我们自己封装的频道下拉列表 -->
+          <channel-select v-model="article.channel_id"></channel-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit(false)">发表</el-button>
@@ -49,11 +51,16 @@ import 'quill/dist/quill.bubble.css'
 // 加载富文本编辑器的核心组件
 import { quillEditor } from 'vue-quill-editor'
 
+// 1 加载
+import ChannelSelect from '@/components/channel-select'
+// 2 注册
+// 3 使用
 export default {
   name: 'PublishArticle',
   components: {
     // 注册局部组件
-    quillEditor
+    quillEditor,
+    ChannelSelect
   },
   data () {
     return {
@@ -66,12 +73,12 @@ export default {
         },
         channel_id: ''
       },
-      channels: [],
+      // channels: [],
       editorOption: {} // 富文本编辑器的配置选项对象
     }
   },
   created () {
-    this.loadChannels()
+    // this.loadChannels()
   },
   methods: {
     onSubmit (draft) {
@@ -92,24 +99,27 @@ export default {
         .catch(err => {
           console.log(err, '保存失败')
         })
-    },
-    loadChannels () {
-      // 有些接口需要 token，有些接口不需要 token
-      // 是否需要，应该由接口文档指示
-      this.$axios({
-        method: 'GET',
-        url: '/channels'
-      })
-        .then(res => {
-          this.channels = res.data.data.channels
-        })
-        .catch(err => {
-          console.log(err, '获取数据失败')
-        })
     }
+    // loadChannels () {
+    //   // 有些接口需要 token，有些接口不需要 token
+    //   // 是否需要，应该由接口文档指示
+    //   this.$axios({
+    //     method: 'GET',
+    //     url: '/channels'
+    //   })
+    //     .then(res => {
+    //       this.channels = res.data.data.channels
+    //     })
+    //     .catch(err => {
+    //       console.log(err, '获取数据失败')
+    //     })
+    // }
   }
 }
 </script>
 
 <style>
+.ql-editor {
+  min-height: 300px;
+}
 </style>
