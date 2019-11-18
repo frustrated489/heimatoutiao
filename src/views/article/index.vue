@@ -20,10 +20,11 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道列表">
-          <el-select placeholder="请选择频道" v-model="filterForm.channel_id">
+          <!-- <el-select placeholder="请选择频道" v-model="filterForm.channel_id">
             <el-option label="所有频道" :value="null"></el-option>
             <el-option :label="channel.name" :value="channel.id" v-for="channel in channels" :key="channel.id"></el-option>
-          </el-select>
+          </el-select> -->
+          <channel-select v-model="filterForm.channel_id"></channel-select>
         </el-form-item>
         <el-form-item label="时间选择">
           <el-date-picker
@@ -93,8 +94,8 @@
         <el-table-column prop="pubdate" label="发布日期"></el-table-column>
         <el-table-column prop="address" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini">修改</el-button>
-            <el-button type="danger" size="mini" @click="onDelete(scope.row.id)">删除</el-button>
+            <el-button type="primary" @click="$router.push('/publish/' + scope.row.id)">修改</el-button>
+            <el-button type="danger"  @click="onDelete(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -119,8 +120,12 @@
 </template>
 
 <script>
+import ChannelSelect from '@/components/channel-select'
 export default {
   name: 'article-list',
+  components: {
+    ChannelSelect
+  },
   data () {
     return {
       filterForm: {
@@ -176,19 +181,20 @@ export default {
         }
       ],
       totalCount: 0, // 总记录数
-      loading: true,
-      channels: [],
-      page: 1
+      loading: true, // 表格的loading 状态
+      // channels: [],// 频道列表
+      page: 1 // 当前页码
     }
   },
 
   created () {
-    //
+    // 初始化的时候加载第 1 页数据
     this.loadArticles(1)
-    this.loadChannels()
+    // 加载频道列表
+    // this.loadChannels()
   },
   methods: {
-    loadArticles (page) {
+    loadArticles (page = 1) {
       // 加载loading
       this.loading = true
       // 在我们的项目中，除了 /login 接口不需要token ，其他所有的接口都需要提供token才能请求,否则后端返回 401 错误
@@ -229,24 +235,29 @@ export default {
           this.loading = false
         })
     },
+    // 该函数是分页组件的 current-change 事件处理函数
+    // 该函数也不是我们调用的，我们只是写了里面的业务代码
+    // current-change 事件：当页码改变的时候，分页组件会调用这个方法
+    // 分页组件在调用的时候，会把当前页码传递给这个方法
+    // 我们这里要做的就是声明一个参数接收使用即可
     onPageChange (page) {
       // 记录当前最新页码
       this.page = page
       // 请求加载指定页码的文章列表
       this.loadArticles(page)
     },
-    loadChannels () {
-      // 有些接口需要 token，有些接口不需要 token
-      // 是否需要，应该由接口文档指示
-      this.$axios({
-        method: 'GET',
-        url: '/channels'
-      }).then(res => {
-        this.channels = res.data.data.channels
-      }).catch(err => {
-        console.log(err, '获取数据失败')
-      })
-    },
+    // loadChannels () {
+    //   // 有些接口需要 token，有些接口不需要 token
+    //   // 是否需要，应该由接口文档指示
+    //   this.$axios({
+    //     method: 'GET',
+    //     url: '/channels'
+    //   }).then(res => {
+    //     this.channels = res.data.data.channels
+    //   }).catch(err => {
+    //     console.log(err, '获取数据失败')
+    //   })
+    // },
     onDelete (articleID) {
       this.$axios({
         method: 'DELETE',
@@ -264,5 +275,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="less">
+.article {
+  .box-card {
+    margin-bottom: 20px;
+  }
+}
 </style>

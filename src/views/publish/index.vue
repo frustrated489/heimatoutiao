@@ -30,7 +30,9 @@
               :key="channel.id"
             ></el-option>
           </el-select> -->
-          <!-- 我们自己封装的频道下拉列表 -->
+          <!-- 我们自己封装的频道下拉列表
+          下拉列表的选中状态受绑定数据的影响
+          下拉列表切换选中也会改变绑定的数据 -->
           <channel-select v-model="article.channel_id"></channel-select>
         </el-form-item>
         <el-form-item>
@@ -71,7 +73,7 @@ export default {
           type: 0,
           images: []
         },
-        channel_id: ''
+        channel_id: 4
       },
       // channels: [],
       editorOption: {} // 富文本编辑器的配置选项对象
