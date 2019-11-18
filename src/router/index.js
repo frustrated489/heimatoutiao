@@ -8,6 +8,7 @@ import Login from '../views/login'
 import Article from '@/views/article'
 import Publish from '@/views/publish'
 import Home from '@/views/home'
+import Comment from '@/views/comment'
 // 加载nprogress
 import NProgress from 'nprogress'
 
@@ -34,6 +35,9 @@ const routes = [
     }, {
       path: '/publish/:articleId',
       component: Publish
+    }, {
+      path: '/comment',
+      component: Comment
     }]
   }, {
     // 一级路由 登录页
