@@ -10,6 +10,7 @@ import Publish from '@/views/publish'
 import Home from '@/views/home'
 import Comment from '@/views/comment'
 import CommentDetail from '@/views/comment-detail'
+import Media from '@/views/media'
 // 加载nprogress
 import NProgress from 'nprogress'
 
@@ -43,6 +44,9 @@ const routes = [
       path: '/comment/:articleId',
       component: CommentDetail,
       props: true
+    }, {
+      path: '/media',
+      component: Media
     }]
   }, {
     // 一级路由 登录页
