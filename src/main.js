@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './styles/index.less'
 import axios from 'axios'
 import JSONbig from 'json-bigint'
+import moment from 'moment'
 // 加载 nprogress 中的指定的样式文件
 // 注意：加载第三方包中的具体文件不需要写具体路径，直接写包名即可
 // 总结就是：'包名/具体文件路径'
@@ -71,7 +72,14 @@ axios.interceptors.response.use(function (response) {
 })
 
 Vue.prototype.$axios = axios // 将axios共享给所有实例使用
-Vue.use(ElementUI) // 注册整个的所有的elementUI 组件 Vue.ues 调用了elementUI里面的一个方法 install=> 调用时传入了Vue 对象
+Vue.use(ElementUI, {
+  size: 'small'
+}) // 注册整个的所有的elementUI 组件 Vue.ues 调用了elementUI里面的一个方法 install=> 调用时传入了Vue 对象
+
+Vue.filter('dateFormat', value => {
+  return moment(value).format('YYYY-MM-DD HH:mm:ss')
+})
+
 Vue.config.productionTip = false
 
 new Vue({

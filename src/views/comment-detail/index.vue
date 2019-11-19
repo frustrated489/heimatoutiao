@@ -38,6 +38,9 @@
           prop="pubdate"
           label="评论日期"
           width="180">
+          <template slot-scope="scope">
+            {{ scope.row.pubdate | dateFormat }}
+          </template>
         </el-table-column>
         <el-table-column
           prop="reply_count"
@@ -50,6 +53,8 @@
 </template>
 
 <script>
+// import moment from 'moment'
+
 export default {
   name: 'CommentDetail',
   components: {},
@@ -70,6 +75,17 @@ export default {
   computed: {},
   watch: {
   },
+  // 实力选项：过滤器
+  // 全局：任何组件都可以
+  // 局部：只能用在当前组件
+  // 它的作用就是：常用于一些简单的文本格式化，例如日期格式化处理
+  // 过滤器函数可以直接在模板中调用
+  // 调用方式：{{ 数据|过滤器函数 }}
+  // filters: {
+  //   dateFormat (value) {
+  //     return moment(value).format('YYYY-MM-DD HH:mm:ss')
+  //   }
+  // },
   created () {
     this.loadComments()
   },
@@ -83,7 +99,13 @@ export default {
           source: this.articleId // 文章id 或 评论id
         }
       }).then(res => {
-        this.comments = res.data.data.results
+        const comments = res.data.data.results
+        // comments.forEach(item => {
+        //   // moment(指定时间).format('格式')
+        //   item.pubdate = moment(item.pubdate).format('YYYY-MM-DD HH:mm:ss')
+        // })
+        // 将处理之后的数据更新到组件中
+        this.comments = comments
       }).catch(err => {
         console.log(err)
         this.$message.error('获取数据失败')
