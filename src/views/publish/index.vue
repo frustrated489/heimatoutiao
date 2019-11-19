@@ -34,6 +34,8 @@
           下拉列表的选中状态受绑定数据的影响
           下拉列表切换选中也会改变绑定的数据 -->
           <channel-select v-model="article.channel_id"></channel-select>
+          <channel-select v-model="article.channel_id"
+          :include-all="false"></channel-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit(false)">发表</el-button>

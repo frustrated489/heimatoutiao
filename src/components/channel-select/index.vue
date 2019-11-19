@@ -1,12 +1,16 @@
 <template>
   <div class="channel-select">
-      <!-- element 的下拉列表组件
-      它这个组件要求 v-model 绑定数据 -->
+    <!-- element 的下拉列表组件
+    它这个组件要求 v-model 绑定数据-->
 
-    <el-select placeholder="请选择频道"
-    :value='value' @input="$emit('input',$event)">
-    <!-- <el-select placeholder="请选择频道"
-    :value='value' @input='onInput'> -->
+    <el-select placeholder="请选择频道" :value="value" @input="$emit('input',$event)">
+      <!-- <el-select placeholder="请选择频道"
+      :value='value' @input='onInput'>-->
+      <el-option
+        v-if="includeAll"
+        :value="null"
+        label="全部频道"
+      ></el-option>
       <el-option
         :label="channel.name"
         :value="channel.id"
@@ -25,6 +29,10 @@ export default {
     value: {
       type: [String, Number],
       require: true
+    },
+    includeAll: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -33,8 +41,7 @@ export default {
     }
   },
   computed: {},
-  watch: {
-  },
+  watch: {},
   created () {
     this.loadChannels()
   },
@@ -45,13 +52,16 @@ export default {
       this.$axios({
         method: 'GET',
         url: '/channels'
-      }).then(res => {
-        this.channels = res.data.data.channels
-      }).catch(err => {
-        console.log(err, '获取数据失败')
       })
+        .then(res => {
+          this.channels = res.data.data.channels
+        })
+        .catch(err => {
+          console.log(err, '获取数据失败')
+        })
     },
-    onInput (data) { // data 是选中的 option 的 value
+    onInput (data) {
+      // data 是选中的 option 的 value
       // 发布一个自定义事件，由于父组件使用的 v-model 简写，所以这里的事件名称必须叫 input
       this.$emit('input', data)
     }
