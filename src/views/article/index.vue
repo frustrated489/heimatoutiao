@@ -37,7 +37,7 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="loadArticles(1)">查询</el-button>
+          <el-button type="primary" @click="onQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -115,6 +115,7 @@
       layout="prev, pager, next"
       :total="totalCount"
       @current-change="onPageChange"
+      :current-page="page"
     ></el-pagination>
   </div>
 </template>
@@ -270,6 +271,12 @@ export default {
       }).catch(err => {
         console.log(err, '删除失败')
       })
+    },
+    onQuery () {
+      // 加载查询第一页数据
+      this.loadArticles(1)
+      // 更新分页组件让第一页激活高亮
+      this.page = 1
     }
   }
 }
