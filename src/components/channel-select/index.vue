@@ -3,10 +3,10 @@
       <!-- element 的下拉列表组件
       它这个组件要求 v-model 绑定数据 -->
 
-    <!-- <el-select placeholder="请选择频道"
-    :value='value' @input="$emit('input',$event)"> -->
     <el-select placeholder="请选择频道"
-    :value='value' @input='onInput'>
+    :value='value' @input="$emit('input',$event)">
+    <!-- <el-select placeholder="请选择频道"
+    :value='value' @input='onInput'> -->
       <el-option
         :label="channel.name"
         :value="channel.id"
