@@ -44,6 +44,19 @@
         </el-table-column>
         <el-table-column
           prop="reply_count"
+          label="是否推荐"
+          width="180">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.is_top"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              @change='onTop(scope.row)'>
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="reply_count"
           label="回复数量"
           width="180">
         </el-table-column>
@@ -109,6 +122,21 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message.error('获取数据失败')
+      })
+    },
+    onTop (comment) {
+      this.$axios({
+        method: 'PUT',
+        url: `/comments/${comment.com_id}/sticky`,
+        data: {
+          // comment.is_top 双向绑定给了开关按钮
+          // 所以获取 comment.is_top 就是在获取开关的状态
+          sticky: comment.is_top
+        }
+      }).then(res => {
+        this.$message('操作成功')
+      }).cathc(err => {
+        this.$message.error('操作失败', err)
       })
     }
   }
